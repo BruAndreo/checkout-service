@@ -10,6 +10,12 @@ describe("Checkout Doamin", () => {
     expect(t).toThrow(ValidationException);
   });
 
+  test("Should throw exception when the product is a gift", () => {
+    const t = () => new Checkout([{ id: 6, quantity: 1 }]);
+
+    expect(t).toThrow(ValidationException);
+  });
+
   test("Should validate and load Prodcts when the id and quantity are ok", () => {
     const checkout = new Checkout([{ id: 1, quantity: 1 }]);
 

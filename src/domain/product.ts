@@ -1,5 +1,5 @@
 import ProductsModel from "../data/productsModel";
-import { ProductNotFoundException } from "../helpers/exceptions";
+import { ProductNotFoundException, ValidationException } from "../helpers/exceptions";
 
 export default class Product {
 
@@ -30,4 +30,7 @@ export default class Product {
     this.is_gift = product.is_gift;
   }
 
+  public isGift() {
+    return this.is_gift;
+  }
 }
