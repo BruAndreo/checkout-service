@@ -15,4 +15,32 @@ describe("Product Domain", () => {
     expect(product).not.toBeNull();
   });
 
+  test("getAmount should return zero when product is a gift", () => {
+    const product = new Product(6, 1);
+
+    expect(product.getAmount()).toEqual(0);
+  });
+
+  test("getDiscount should return zero when product is a gift", () => {
+    const product = new Product(6, 1);
+
+    expect(product.getDiscount()).toEqual(0);
+  })
+
+  test("getAmount should return multiple value when quantity is more than one", () => {
+    const product = new Product(1, 2);
+
+    const valueExpected = 15157 * 2;
+
+    expect(product.getAmount()).toEqual(valueExpected);
+  });
+
+  test("getDiscount should return multiple value when quantity is more than one", () => {
+    const product = new Product(1, 2);
+
+    const valueExpected = 0 * 2;
+
+    expect(product.getDiscount()).toEqual(valueExpected);
+  })
+
 });

@@ -1,6 +1,7 @@
 import { ValidationException } from "../helpers/exceptions";
 import Product from "./product";
 import { ProductBase } from "../types/productBase";
+import isBlackFriday from "../helpers/blackFriday";
 export default class Checkout {
 
   private products: Array<Product>;
@@ -23,6 +24,16 @@ export default class Checkout {
 
       return productCompelte;
     });
+
+    this.addBlackFridayGift();
+  }
+
+  private addBlackFridayGift() {
+    if (!isBlackFriday()) {
+      return;
+    }
+
+    this.products.push(new Product(6, 1));
   }
 
   getCheckoutResume() {

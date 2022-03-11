@@ -36,18 +36,18 @@ export default class Product {
   }
 
   public getAmount(): number {
-    return this.amount * this.quantity;
+    return this.isGift() ? 0 : this.amount * this.quantity;
   }
 
   public getDiscount(): number {
-    return this.discount * this.quantity;
+    return this.isGift() ? 0 : this.discount * this.quantity;
   }
 
   public getResume() {
     return {
       id: this.id,
       quantity: this.quantity,
-      unit_amount: this.amount,
+      unit_amount: this.isGift() ? 0 : this.amount,
       total_amount: this.getAmount(),
       discount: this.getDiscount(),
       is_gift: this.is_gift
