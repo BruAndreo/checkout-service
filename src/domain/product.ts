@@ -22,7 +22,7 @@ export default class Product {
     const product = ProductsModel.getById(this.id);
 
     if (!product) {
-      throw new ProductNotFoundException("Product not found", 404);
+      throw new ProductNotFoundException("Product not found");
     }
 
     this.title = product.title;

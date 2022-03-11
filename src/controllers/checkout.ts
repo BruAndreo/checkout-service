@@ -7,7 +7,7 @@ export default function checkout(req: Request, res: Response): Response {
 
   try {
     if (!products || products.length < 1) {
-      throw new ValidationException("Products are required", 400);
+      throw new ValidationException("Products are required");
     }
 
     const checkout = new Checkout(products);
