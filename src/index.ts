@@ -1,6 +1,4 @@
-import 'dotenv/config'
 import app from "./server/application";
+import configs from "./config"
 
-const port = process.env.PORT;
-
-app.listen(port, () => console.log(`Server online at port ${port}`))
+app.listen(configs.serverPort, () => console.log(`Server online at port ${configs.serverPort}`))
