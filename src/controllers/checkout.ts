@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import Checkout from "../domain/checkout";
 import { ValidationException } from "../helpers/exceptions";
 
 export default function checkout(req: Request, res: Response): Response {
@@ -8,6 +9,8 @@ export default function checkout(req: Request, res: Response): Response {
     if (!products || products.length < 1) {
       throw new ValidationException("Products are required", 400);
     }
+
+    const checkout = new Checkout(products);
 
     return res.json({ message: "checkout" });
   }
