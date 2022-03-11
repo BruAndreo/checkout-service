@@ -1,11 +1,6 @@
 import { ValidationException } from "../helpers/exceptions";
 import Product from "./product";
-
-type ProductBase = {
-  id: number
-  quantity: number
-}
-
+import { ProductBase } from "../types/productBase";
 export default class Checkout {
 
   private products: Array<Product>;
