@@ -12,7 +12,7 @@ export default function checkout(req: Request, res: Response): Response {
 
     const checkout = new Checkout(products);
 
-    return res.json({ message: "checkout" });
+    return res.status(200).json(checkout.getCheckoutResume());
   }
   catch(e: any) {
     return res.status(e.statusCode || 500).json({

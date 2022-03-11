@@ -25,4 +25,16 @@ export default class Checkout {
     });
   }
 
+  getCheckoutResume() {
+    const totalAmount = this.products.reduce((amount, product) => product.getAmount() + amount, 0);
+    const totalDiscount = this.products.reduce((discount, product) => product.getDiscount() + discount, 0);
+
+    return {
+      total_amount: totalAmount,
+      total_amount_with_discount: totalAmount - totalDiscount,
+      total_discount: totalDiscount,
+      products: this.products.map(product => product.getResume())
+    }
+  }
+
 }
