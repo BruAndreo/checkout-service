@@ -1,7 +1,7 @@
 import { ValidationException } from "../helpers/exceptions";
 import Product from "./product";
 import { ProductBase } from "../types/productBase";
-import isBlackFriday from "../helpers/blackFriday";
+import {isBlackFriday} from "../helpers/blackFriday";
 export default class Checkout {
 
   private products: Array<Product>;

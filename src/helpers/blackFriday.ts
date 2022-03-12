@@ -1,6 +1,6 @@
 import configs from "../config"
 
-export default function isBlackFriday(): boolean {
+export function isBlackFriday(): boolean {
   if (!configs.blackFridayDate) {
     return false
   }

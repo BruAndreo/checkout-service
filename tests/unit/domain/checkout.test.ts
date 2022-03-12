@@ -1,4 +1,5 @@
 import Checkout from "../../../src/domain/checkout";
+import * as blackFriday from "../../../src/helpers/blackFriday";
 import { ValidationException } from "../../../src/helpers/exceptions";
 
 
@@ -20,6 +21,26 @@ describe("Checkout Doamin", () => {
     const checkout = new Checkout([{ id: 1, quantity: 1 }]);
 
     expect(checkout).not.toBeNull();
+  });
+
+  test("Should not add a gift product when isn't black friday", () => {
+    jest.spyOn(blackFriday, 'isBlackFriday').mockReturnValueOnce(false);
+
+    const checkout = new Checkout([{ id: 1, quantity: 1 }]);
+    const resume = checkout.getCheckoutResume();
+    const gifts = resume.products.filter(product => product.is_gift);
+
+    expect(gifts.length).toEqual(0);
+  });
+
+  test("Should add a gift product when is black friday", () => {
+    jest.spyOn(blackFriday, 'isBlackFriday').mockReturnValueOnce(true);
+
+    const checkout = new Checkout([{ id: 1, quantity: 1 }]);
+    const resume = checkout.getCheckoutResume();
+    const gifts = resume.products.filter(product => product.is_gift);
+
+    expect(gifts.length).toEqual(1);
   });
 
 });
