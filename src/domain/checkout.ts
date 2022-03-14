@@ -44,8 +44,8 @@ export default class Checkout {
   }
 
   async getCheckoutResume() {
-    const totalAmount = this.productsComplet.reduce((amount, product) => product.getAmount() + amount, 0);
-    const totalDiscount = this.productsComplet.reduce((discount, product) => product.getDiscount() + discount, 0);
+    const totalAmount = this.productsComplet.reduce((amount, product) => product.getTotalAmount() + amount, 0);
+    const totalDiscount = this.productsComplet.reduce((discount, product) => product.getTotalDiscount() + discount, 0);
 
     return {
       total_amount: totalAmount,

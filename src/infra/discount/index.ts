@@ -9,14 +9,14 @@ export function getDiscountService(productId: number): Promise<number> {
 
     client.getDiscount((new GetDiscountRequest()).setProductid(productId), (err, discount) => {
       if (err) {
-        console.log("Erro: ", err);
-        reject(err);
+        console.error(err);
+        return reject(err);
       }
 
       const percentenge = discount.toObject().percentage.toPrecision(1);
 
       client.close();
-      resolve(Number(percentenge));
+      return resolve(Number(percentenge));
     });
   });
 }
