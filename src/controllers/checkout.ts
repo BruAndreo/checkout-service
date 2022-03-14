@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Checkout from "../domain/checkout";
 import { ValidationException } from "../helpers/exceptions";
 
-export default function checkout(req: Request, res: Response): Response {
+export default async function checkout(req: Request, res: Response): Promise<Response> {
   const products = req.body.products;
 
   try {
@@ -11,8 +11,10 @@ export default function checkout(req: Request, res: Response): Response {
     }
 
     const checkout = new Checkout(products);
+    await checkout.validateProducts();
+    const checkoutResume = await checkout.getCheckoutResume();
 
-    return res.status(200).json(checkout.getCheckoutResume());
+    return res.status(200).json(checkoutResume);
   }
   catch(e: any) {
     return res.status(e.statusCode || 500).json({

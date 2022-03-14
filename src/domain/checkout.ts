@@ -4,47 +4,54 @@ import { ProductBase } from "../types/productBase";
 import {isBlackFriday} from "../helpers/blackFriday";
 export default class Checkout {
 
-  private products: Array<Product>;
+  private products: Array<ProductBase>;
+  private productsComplet: Array<Product> = [];
 
   constructor(products: Array<ProductBase>) {
-    this.validateProducts(products);
+    this.products = products;
   }
 
-  private validateProducts(products: Array<ProductBase>) {
-    this.products = products.map(product => {
+  public async validateProducts() {
+    for(const product of this.products) {
       if (product.quantity < 1) {
         throw new ValidationException("Quantity is not ");
       }
 
-      const productCompelte =  new Product(product.id, product.quantity);
+      const productComplet = await this.createAndLoadProduct(product.id, product.quantity);
 
-      if (productCompelte.isGift()) {
+      if (productComplet.isGift()) {
         throw new ValidationException("A gift product doesn't to be added");
       }
 
-      return productCompelte;
-    });
+      this.productsComplet.push(productComplet);
+    };
 
-    this.addBlackFridayGift();
+    await this.addBlackFridayGift();
   }
 
-  private addBlackFridayGift() {
+  private async addBlackFridayGift() {
     if (!isBlackFriday()) {
       return;
     }
 
-    this.products.push(new Product(6, 1));
+    this.productsComplet.push(await this.createAndLoadProduct(6, 1));
   }
 
-  getCheckoutResume() {
-    const totalAmount = this.products.reduce((amount, product) => product.getAmount() + amount, 0);
-    const totalDiscount = this.products.reduce((discount, product) => product.getDiscount() + discount, 0);
+  private async createAndLoadProduct(id: number, quantity: number): Promise<Product> {
+    const product = new Product(id, quantity);
+    await product.load();
+    return product;
+  }
+
+  async getCheckoutResume() {
+    const totalAmount = this.productsComplet.reduce((amount, product) => product.getAmount() + amount, 0);
+    const totalDiscount = this.productsComplet.reduce((discount, product) => product.getDiscount() + discount, 0);
 
     return {
       total_amount: totalAmount,
       total_amount_with_discount: totalAmount - totalDiscount,
       total_discount: totalDiscount,
-      products: this.products.map(product => product.getResume())
+      products: this.productsComplet.map(product => product.getResume())
     }
   }
 

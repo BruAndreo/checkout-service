@@ -1,5 +1,6 @@
 import ProductsModel from "../data/productsModel";
 import { ProductNotFoundException, ValidationException } from "../helpers/exceptions";
+import { getDiscountService } from "../infra/discount";
 
 export default class Product {
 
@@ -14,11 +15,9 @@ export default class Product {
   constructor(id: number, quantity: number) {
     this.id = id;
     this.quantity = quantity;
-
-    this.load();
   }
 
-  private load() {
+  public async load() {
     const product = ProductsModel.getById(this.id);
 
     if (!product) {
@@ -29,6 +28,13 @@ export default class Product {
     this.description = product.description;
     this.amount = product.amount;
     this.is_gift = product.is_gift;
+
+    const discountPercentage = await getDiscountService(this.id);
+    this.setDiscount(discountPercentage);
+  }
+
+  private setDiscount(discountPercentage: number) {
+    this.discount = Math.trunc(this.amount * discountPercentage);
   }
 
   public isGift() {
