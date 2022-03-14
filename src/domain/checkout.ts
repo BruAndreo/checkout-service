@@ -5,7 +5,7 @@ import {isBlackFriday} from "../helpers/blackFriday";
 export default class Checkout {
 
   private products: Array<ProductBase>;
-  private productsComplet: Array<Product> = [];
+  private productsComplete: Array<Product> = [];
 
   constructor(products: Array<ProductBase>) {
     this.products = products;
@@ -23,7 +23,7 @@ export default class Checkout {
         throw new ValidationException("A gift product doesn't to be added");
       }
 
-      this.productsComplet.push(productComplet);
+      this.productsComplete.push(productComplet);
     };
 
     await this.addBlackFridayGift();
@@ -34,7 +34,7 @@ export default class Checkout {
       return;
     }
 
-    this.productsComplet.push(await this.createAndLoadProduct(6, 1));
+    this.productsComplete.push(await this.createAndLoadProduct(6, 1));
   }
 
   private async createAndLoadProduct(id: number, quantity: number): Promise<Product> {
@@ -43,15 +43,15 @@ export default class Checkout {
     return product;
   }
 
-  async getCheckoutResume() {
-    const totalAmount = this.productsComplet.reduce((amount, product) => product.getTotalAmount() + amount, 0);
-    const totalDiscount = this.productsComplet.reduce((discount, product) => product.getTotalDiscount() + discount, 0);
+  getCheckoutResume() {
+    const totalAmount = this.productsComplete.reduce((amount, product) => product.getTotalAmount() + amount, 0);
+    const totalDiscount = this.productsComplete.reduce((discount, product) => product.getTotalDiscount() + discount, 0);
 
     return {
       total_amount: totalAmount,
       total_amount_with_discount: totalAmount - totalDiscount,
       total_discount: totalDiscount,
-      products: this.productsComplet.map(product => product.getResume())
+      products: this.productsComplete.map(product => product.getResume())
     }
   }
 

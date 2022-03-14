@@ -12,7 +12,7 @@ export default async function checkout(req: Request, res: Response): Promise<Res
 
     const checkout = new Checkout(products);
     await checkout.validateProducts();
-    const checkoutResume = await checkout.getCheckoutResume();
+    const checkoutResume = checkout.getCheckoutResume();
 
     return res.status(200).json(checkoutResume);
   }

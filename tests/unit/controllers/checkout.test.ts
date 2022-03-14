@@ -3,11 +3,12 @@ import mockRequest from '../mocks/request';
 import mockResponse from '../mocks/response';
 import { emptyBody, bodyWithZeroProducts, bodyCorrect } from '../mocks/bodys';
 
-describe("Checkout Controller", () => {
-  const checkoutController = checkout;
+jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
 
-  test('Should return error when products are not passed', () => {
-    const response = checkout(
+describe("Checkout Controller", () => {
+
+  test('Should return error when products are not passed', async () => {
+    const response = await checkout(
       mockRequest({}, emptyBody),
       mockResponse()
     );
@@ -16,8 +17,8 @@ describe("Checkout Controller", () => {
     expect(response.json).toHaveBeenCalledWith({ message: "Products are required" });
   });
 
-  test('Should return error when products are empty', () => {
-    const response = checkout(
+  test('Should return error when products are empty', async () => {
+    const response = await checkout(
       mockRequest({}, bodyWithZeroProducts),
       mockResponse()
     );
@@ -26,8 +27,8 @@ describe("Checkout Controller", () => {
     expect(response.json).toHaveBeenCalledWith({ message: "Products are required" });
   });
 
-  test("Should return a expected body when the request is success", () => {
-    const response = checkout(
+  test("Should return a expected body when the request is success", async () => {
+    const response = await checkout(
       mockRequest({}, bodyCorrect),
       mockResponse()
     );
