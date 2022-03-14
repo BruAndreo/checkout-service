@@ -1,9 +1,10 @@
 import Product from "../../../src/domain/product";
 import { ProductNotFoundException } from "../../../src/helpers/exceptions";
+import * as discountService from "../../../src/infra/discount";
 
-jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
 
 describe("Product Domain", () => {
+  jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
 
   test("Should throw exception when product is not found", async () => {
     const t = async () => {
@@ -44,13 +45,17 @@ describe("Product Domain", () => {
     expect(product.getTotalAmount()).toEqual(valueExpected);
   });
 
+});
+
+describe("Product Domain With 0.05 discount", () => {
   test("getDiscount should return multiple value when quantity is more than one", async () => {
+    jest.spyOn(discountService, 'getDiscountService').mockResolvedValueOnce(0.05);
+
     const product = new Product(1, 2);
     await product.load();
 
-    const valueExpected = 0 * 2;
+    const valueExpected = 1514;
 
     expect(product.getTotalDiscount()).toEqual(valueExpected);
-  })
-
+  });
 });
