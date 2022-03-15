@@ -1,6 +1,7 @@
 import ProductsModel from "../data/productsModel";
 import { ProductNotFoundException, ValidationException } from "../helpers/exceptions";
 import { getDiscountService } from "../infra/discount";
+import log from "loglevel";
 
 export default class Product {
 
@@ -29,6 +30,8 @@ export default class Product {
     this.amount = product.amount;
     this.is_gift = product.is_gift;
     await this.setDiscount();
+
+    log.debug(`Product ${this.title} loaded`);
   }
 
   private async setDiscount() {
@@ -37,10 +40,11 @@ export default class Product {
     try {
       discountPercentage = await getDiscountService(this.id);
     } catch (e) {
-      console.warn("Error in get Discount Service, using 0 by default");
+      log.warn("Error in get value from Discount Service, using 0 by default");
     }
 
     this.discount = Math.trunc(this.amount * discountPercentage);
+    log.debug(`Discount for ${this.id}|${this.title} setted: ${this.discount}`);
   }
 
   public isGift() {

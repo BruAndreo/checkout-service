@@ -2,6 +2,14 @@ import Checkout from "../../../src/domain/checkout";
 import * as blackFriday from "../../../src/helpers/blackFriday";
 import { ValidationException } from "../../../src/helpers/exceptions";
 
+
+jest.mock('loglevel', () => ({
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn()
+}));
+
 jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
 
 describe("Checkout Domain", () => {

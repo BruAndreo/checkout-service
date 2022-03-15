@@ -1,4 +1,7 @@
 import app from "./server/application";
 import configs from "./config"
+import log, { LogLevelDesc } from "loglevel";
 
-app.listen(configs.serverPort, () => console.log(`Server online at port ${configs.serverPort}`))
+log.setDefaultLevel(configs.logLevel as LogLevelDesc);
+
+app.listen(configs.serverPort, () => log.info(`Server online at port ${configs.serverPort}`))

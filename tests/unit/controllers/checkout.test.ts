@@ -3,6 +3,13 @@ import mockRequest from '../mocks/request';
 import mockResponse from '../mocks/response';
 import { emptyBody, bodyWithZeroProducts, bodyCorrect } from '../mocks/bodys';
 
+jest.mock('loglevel', () => ({
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn()
+}));
+
 jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
 
 describe("Checkout Controller", () => {

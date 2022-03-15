@@ -2,6 +2,12 @@ import Product from "../../../src/domain/product";
 import { ProductNotFoundException } from "../../../src/helpers/exceptions";
 import * as discountService from "../../../src/infra/discount";
 
+jest.mock('loglevel', () => ({
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn()
+}));
 
 describe("Product Domain", () => {
   jest.mock('../../../src/infra/discount', () => jest.fn(() => 0));
