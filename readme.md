@@ -71,7 +71,7 @@ docker-compose up
 ```
 
 
-### Padrões de commit
+## Convenções de commit do projeto
 
 Este projeto segue as convenções de commit do [Angular](https://hub.docker.com/r/hashorg/hash-mock-discount-service). Para ajudar a legibilidade dos commits, e possíveis versionamentos.
 ***Exceção dos commits iniciais***
