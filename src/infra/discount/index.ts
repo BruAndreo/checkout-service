@@ -1,12 +1,14 @@
 import { ChannelCredentials } from "@grpc/grpc-js";
 import log from "loglevel";
+import configs from "../../config"
 
 import { DiscountClient } from "../../../proto/discount_grpc_pb"
 import { GetDiscountRequest } from "../../../proto/discount_pb";
 
 export function getDiscountService(productId: number): Promise<number> {
   return new Promise((resolve, reject) => {
-    const client = new DiscountClient('localhost:50051', ChannelCredentials.createInsecure());
+    const { host, port } = configs.discountService;
+    const client = new DiscountClient(`${host}:${port}`, ChannelCredentials.createInsecure());
 
     client.getDiscount((new GetDiscountRequest()).setProductid(productId), (err, discount) => {
       if (err) {
