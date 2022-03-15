@@ -1,0 +1,12 @@
+version: '2'
+services:
+  checkout-service:
+    build: .
+    ports:
+      - "3000:3000"
+    network_mode: "host"
+
+  discount-service:
+    image: hashorg/hash-mock-discount-service
+    ports:
+      - "50051:50051"
